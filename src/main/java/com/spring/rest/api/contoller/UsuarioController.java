@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController //Arquitetura REST
 @RequestMapping(value = "/usuario")
@@ -14,12 +16,25 @@ public class UsuarioController {
 
     //Servico RESTfull
     @GetMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Usuario> init(@RequestParam(value = "nome", required = true,
-            defaultValue = "Nome nao informado") String nome, @RequestParam("salario") Long salario) {
+    public ResponseEntity<Usuario> init() {
 
-        System.out.printf("Parametro sendo recebido " + nome);
+        Usuario usuario = new Usuario();
+        usuario.setId(50L);
+        usuario.setLogin("vinicius@gmail.com");
+        usuario.setNome("Vinicius Rocha");
+        usuario.setSenha("13235");
 
-        return new ResponseEntity("Ola Usuario REST Spring Boot seu nome e: " + nome
-                + " Salario e " + salario, HttpStatus.OK);
+        Usuario usuario2 = new Usuario();
+        usuario2.setId(8L);
+        usuario2.setLogin("dsd@gmail.com");
+        usuario2.setNome("Vinicius sdsd");
+        usuario2.setSenha("sdsd");
+
+        List<Usuario> usuarios = new ArrayList<>();
+        usuarios.add(usuario);
+        usuarios.add(usuario2);
+
+
+        return new ResponseEntity(usuarios, HttpStatus.OK);
     }
 }
