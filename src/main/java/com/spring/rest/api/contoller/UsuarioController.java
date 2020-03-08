@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController //Arquitetura REST
 @RequestMapping(value = "/usuario")
 public class UsuarioController {
@@ -53,7 +54,6 @@ public class UsuarioController {
         return "ok";
     }
 
-    @CrossOrigin(origins = "www.java.com.br")
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<List<Usuario>> listUsuario() {
 
@@ -62,7 +62,6 @@ public class UsuarioController {
         return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = {"www.sistemadocliente10.com.br", "www.sistemadocliente70.com.br"})
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
 
@@ -73,7 +72,6 @@ public class UsuarioController {
         return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.CREATED);
     }
 
-    @CrossOrigin(origins = "localhost:8080")
     @PutMapping(value = "/", produces = "application/json")
     public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario) {
 
