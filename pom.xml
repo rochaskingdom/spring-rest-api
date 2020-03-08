@@ -11,7 +11,7 @@
     <groupId>com.spring.rest.api</groupId>
     <artifactId>spring-rest-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>spring-rest-api</name>
     <description>API REST Spring Boot</description>
 
