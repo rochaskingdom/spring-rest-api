@@ -1,5 +1,7 @@
 package com.spring.rest.api.model;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +13,7 @@ public class Telefone {
 
     private String numero;
 
+    @JsonIgnore
     @org.hibernate.annotations.ForeignKey(name = "usuario_id")
     @ManyToOne
     private Usuario usuario;
