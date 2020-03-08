@@ -37,6 +37,22 @@ public class UsuarioController {
         return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{id}", produces = "application/text")
+    public String delete(@PathVariable("id") Long id) {
+
+        usuarioRepository.deleteById(id);
+
+        return "ok";
+    }
+
+    @DeleteMapping(value = "/{id}/venda/", produces = "application/text")
+    public String deleteVenda(@PathVariable("id") Long id) {
+
+        usuarioRepository.deleteById(id); // iria deletar toas as vendas do usuario
+
+        return "ok";
+    }
+
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<List<Usuario>> listUsuario() {
 
