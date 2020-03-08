@@ -64,7 +64,7 @@ public class UsuarioController {
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
 
-
+        usuario.getTelefones().forEach(t -> t.setUsuario(usuario));
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 

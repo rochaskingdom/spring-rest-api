@@ -1,8 +1,11 @@
 package com.spring.rest.api.model;
 
-import net.minidev.json.annotate.JsonIgnore;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Telefone {
@@ -15,7 +18,7 @@ public class Telefone {
 
     @JsonIgnore
     @org.hibernate.annotations.ForeignKey(name = "usuario_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Usuario usuario;
 
     public Long getId() {
@@ -40,5 +43,18 @@ public class Telefone {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Telefone telefone = (Telefone) o;
+        return Objects.equals(id, telefone.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
