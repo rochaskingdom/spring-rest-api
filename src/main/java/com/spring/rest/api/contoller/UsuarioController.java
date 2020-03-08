@@ -76,6 +76,8 @@ public class UsuarioController {
 
         // outras rotinas antes de atualizar
 
+        usuario.getTelefones().forEach(t -> t.setUsuario(usuario));
+
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
         return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
