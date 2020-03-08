@@ -1,40 +1,39 @@
 package com.spring.rest.api.contoller;
 
 import com.spring.rest.api.model.Usuario;
+import com.spring.rest.api.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController //Arquitetura REST
 @RequestMapping(value = "/usuario")
 public class UsuarioController {
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     //Servico RESTfull
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<Usuario> listId(@PathVariable(value = "id") Long id) {
+
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Usuario> init() {
+    public ResponseEntity<List<Usuario>> listUsuario() {
 
-        Usuario usuario = new Usuario();
-        usuario.setId(50L);
-        usuario.setLogin("vinicius@gmail.com");
-        usuario.setNome("Vinicius Rocha");
-        usuario.setSenha("13235");
+        List<Usuario> list = (List<Usuario>) usuarioRepository.findAll();
 
-        Usuario usuario2 = new Usuario();
-        usuario2.setId(8L);
-        usuario2.setLogin("dsd@gmail.com");
-        usuario2.setNome("Vinicius sdsd");
-        usuario2.setSenha("sdsd");
-
-        List<Usuario> usuarios = new ArrayList<>();
-        usuarios.add(usuario);
-        usuarios.add(usuario2);
-
-
-        return new ResponseEntity(usuarios, HttpStatus.OK);
+        return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
     }
 }
