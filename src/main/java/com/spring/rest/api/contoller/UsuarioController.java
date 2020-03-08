@@ -53,6 +53,16 @@ public class UsuarioController {
         return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.CREATED);
     }
 
+    @PutMapping(value = "/", produces = "application/json")
+    public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario) {
+
+        // outras rotinas antes de atualizar
+
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+
+        return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/{iduser}/idvenda/{idvenda}", produces = "application/json")
     public ResponseEntity<Usuario> cadastrarVenda(@PathVariable Long iduser,
                                                   @PathVariable Long idvenda) {
@@ -62,4 +72,15 @@ public class UsuarioController {
 
         return new ResponseEntity("id user: " + iduser + "idvenda: " + idvenda, HttpStatus.CREATED);
     }
+
+    @PutMapping(value = "/{iduser}/idvenda/{idvenda}", produces = "application/json")
+    public ResponseEntity updateVenda(@RequestBody Usuario usuario) {
+
+        // outras rotinas antes de atualizar
+
+        // Usuario usuarioSalvo = usuarioRepository.save(usuario);
+
+        return new ResponseEntity("Venda atualizada", HttpStatus.OK);
+    }
+
 }
