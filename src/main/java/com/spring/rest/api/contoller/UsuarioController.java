@@ -21,6 +21,17 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     //Servico RESTfull
+    @GetMapping(value = "/{id}/codigovenda/{venda}", produces = "application/json")
+    public ResponseEntity<Usuario> relatorio(@PathVariable(value = "id") Long id,
+                                             @PathVariable(value = "venda") Long venda) {
+
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        //retorno seria um relatorio
+        return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+    }
+
+    //Servico RESTfull
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Usuario> listId(@PathVariable(value = "id") Long id) {
 
