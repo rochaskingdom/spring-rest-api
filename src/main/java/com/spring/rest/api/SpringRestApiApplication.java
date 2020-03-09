@@ -33,6 +33,6 @@ public class SpringRestApiApplication implements WebMvcConfigurer {
         registry.addMapping("/usuario/**")
                 .allowedMethods("*")
                 .allowedOrigins("*");
-                // Liberando o mapeamento de usuario para toas as origens
+        // Liberando o mapeamento de usuario para toas as origens
     }
 }

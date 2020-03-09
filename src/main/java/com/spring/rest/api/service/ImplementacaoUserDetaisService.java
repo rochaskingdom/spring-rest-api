@@ -23,12 +23,12 @@ public class ImplementacaoUserDetaisService implements UserDetailsService {
         Usuario usuario = usuarioRepository.findUserByLogin(username);
 
         if (usuario == null) {
-            throw  new UsernameNotFoundException("Usuarrio nao foi encontrado");
+            throw new UsernameNotFoundException("Usuarrio nao foi encontrado");
         }
 
         return new User(usuario.getLogin(),
                 usuario.getPassword(),
                 usuario.getAuthorities());
-        
+
     }
 }

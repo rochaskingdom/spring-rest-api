@@ -12,6 +12,9 @@ import java.util.Objects;
 @Entity
 public class Usuario implements UserDetails {
 
+    public Usuario() {
+
+    }
 
     private static final long serialVersionUID = 1L;
 
