@@ -4,7 +4,6 @@ package com.spring.rest.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class Telefone {
@@ -44,16 +43,4 @@ public class Telefone {
         this.usuario = usuario;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Telefone telefone = (Telefone) o;
-        return Objects.equals(id, telefone.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

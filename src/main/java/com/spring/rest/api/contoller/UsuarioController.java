@@ -3,34 +3,40 @@ package com.spring.rest.api.contoller;
 import com.spring.rest.api.model.Usuario;
 import com.spring.rest.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@RestController //Arquitetura REST
+@RestController /* Arquitetura REST */
 @RequestMapping(value = "/usuario")
 public class UsuarioController {
 
-    @Autowired
+    @Autowired /* de fosse CDI seria @Inject*/
     private UsuarioRepository usuarioRepository;
 
-    //  Servico RESTfull
+
+    /* Serviço RESTful */
     @GetMapping(value = "/{id}/codigovenda/{venda}", produces = "application/json")
-    public ResponseEntity<Usuario> relatorio(@PathVariable(value = "id") Long id,
-                                             @PathVariable(value = "venda") Long venda) {
+    public ResponseEntity<Usuario> relatorio(@PathVariable(value = "id") Long id
+            , @PathVariable(value = "venda") Long venda) {
 
         Optional<Usuario> usuario = usuarioRepository.findById(id);
 
-        // retorno seria um relatorio
+        /*o retorno seria um relatorio*/
         return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
     }
 
-    // Servico RESTfull
+
+    /* Serviço RESTful */
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Usuario> listId(@PathVariable(value = "id") Long id) {
+    @Cacheable("cacheuser")
+    public ResponseEntity<Usuario> init(@PathVariable(value = "id") Long id) {
 
         Optional<Usuario> usuario = usuarioRepository.findById(id);
 
@@ -45,62 +51,92 @@ public class UsuarioController {
         return "ok";
     }
 
-    @DeleteMapping(value = "/{id}/venda/", produces = "application/text")
-    public String deleteVenda(@PathVariable("id") Long id) {
 
-        usuarioRepository.deleteById(id); // iria deletar toas as vendas do usuario
+    @DeleteMapping(value = "/{id}/venda", produces = "application/text")
+    public String deletevenda(@PathVariable("id") Long id) {
+
+        usuarioRepository.deleteById(id);
 
         return "ok";
     }
 
+
+    /*Vamos supor que o carregamento de usuário seja um processo lento
+     * e queremos controlar ele com cache para agilizar o processo*/
     @GetMapping(value = "/", produces = "application/json")
-    public ResponseEntity<List<Usuario>> listUsuario() {
+    @Cacheable("cacheusuarios")
+    public ResponseEntity<List<Usuario>> usuario() throws InterruptedException {
 
         List<Usuario> list = (List<Usuario>) usuarioRepository.findAll();
+
+        Thread.sleep(6000);/*Segura o codigo por 6 segunos simulando um processo lento*/
 
         return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
     }
 
+
     @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> cadastrar(@RequestBody @Valid Usuario usuario) {
 
-        usuario.getTelefones().forEach(t -> t.setUsuario(usuario));
+        for (int pos = 0; pos < usuario.getTelefones().size(); pos++) {
+            usuario.getTelefones().get(pos).setUsuario(usuario);
+        }
 
+        String senhacriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
+        usuario.setSenha(senhacriptografada);
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.CREATED);
+        return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
+
     }
+
 
     @PutMapping(value = "/", produces = "application/json")
     public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario) {
 
-        // outras rotinas antes de atualizar
+        /*outras rotinas antes de atualizar*/
 
-        usuario.getTelefones().forEach(t -> t.setUsuario(usuario));
+        for (int pos = 0; pos < usuario.getTelefones().size(); pos++) {
+            usuario.getTelefones().get(pos).setUsuario(usuario);
+        }
+
+        Usuario userTemporario = usuarioRepository.findUserByLogin(usuario.getLogin());
+
+
+        if (!userTemporario.getSenha().equals(usuario.getSenha())) { /*Senhas diferentes*/
+            String senhacriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
+            usuario.setSenha(senhacriptografada);
+        }
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
         return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
+
     }
 
-    @PostMapping(value = "/{iduser}/idvenda/{idvenda}", produces = "application/json")
-    public ResponseEntity<Usuario> cadastrarVenda(@PathVariable Long iduser,
-                                                  @PathVariable Long idvenda) {
-
-        // Aqui seria o processo de venda
-        // Usuario usuarioSalvo = usuarioRepository.save(usuario);
-
-        return new ResponseEntity("id user: " + iduser + "idvenda: " + idvenda, HttpStatus.CREATED);
-    }
 
     @PutMapping(value = "/{iduser}/idvenda/{idvenda}", produces = "application/json")
-    public ResponseEntity updateVenda(@RequestBody Usuario usuario) {
+    public ResponseEntity updateVenda(@PathVariable Long iduser,
+                                      @PathVariable Long idvenda) {
+        /*outras rotinas antes de atualizar*/
 
-        // outras rotinas antes de atualizar
+        //Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        // Usuario usuarioSalvo = usuarioRepository.save(usuario);
+        return new ResponseEntity("Venda atualzada", HttpStatus.OK);
 
-        return new ResponseEntity("Venda atualizada", HttpStatus.OK);
     }
+
+
+    @PostMapping(value = "/{iduser}/idvenda/{idvenda}", produces = "application/json")
+    public ResponseEntity cadastrarvenda(@PathVariable Long iduser,
+                                         @PathVariable Long idvenda) {
+
+        /*Aqui seria o processo de venda*/
+        //Usuario usuarioSalvo = usuarioRepository.save(usuario);
+
+        return new ResponseEntity("id user :" + iduser + " idvenda :" + idvenda, HttpStatus.OK);
+
+    }
+
 
 }

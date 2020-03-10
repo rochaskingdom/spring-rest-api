@@ -15,10 +15,10 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
     private Long id;
 
-    private String nomeRole; // Papel, exemplo ROLE_SECRETARIO OU ROLE_GERENTE...
+    private String nomeRole; /* Papel, exemplo ROLE_SECRETARIO OU ROLE_GERENTE... */
 
     @Override
-    public String getAuthority() { // Retorna o nome no papel, acesso ou atorizacao. Exemplo ROLE_GERENTE
+    public String getAuthority() { /* Retorna o nome no papel, acesso ou atorização exemplo ROLE_GERENTE */
         return this.nomeRole;
     }
 
@@ -37,4 +37,5 @@ public class Role implements GrantedAuthority {
     public void setNomeRole(String nomeRole) {
         this.nomeRole = nomeRole;
     }
+
 }
