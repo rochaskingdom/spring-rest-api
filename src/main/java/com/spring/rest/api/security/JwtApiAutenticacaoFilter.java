@@ -1,5 +1,6 @@
 package com.spring.rest.api.security;
 
+import com.spring.rest.api.service.JWTTokenAutenticacaoService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;

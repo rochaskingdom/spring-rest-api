@@ -2,6 +2,7 @@ package com.spring.rest.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.rest.api.model.Usuario;
+import com.spring.rest.api.service.JWTTokenAutenticacaoService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

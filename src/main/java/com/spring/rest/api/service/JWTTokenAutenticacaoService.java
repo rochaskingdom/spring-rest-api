@@ -1,4 +1,4 @@
-package com.spring.rest.api.security;
+package com.spring.rest.api.service;
 
 import com.spring.rest.api.ApplicationContextLoad;
 import com.spring.rest.api.model.Usuario;
