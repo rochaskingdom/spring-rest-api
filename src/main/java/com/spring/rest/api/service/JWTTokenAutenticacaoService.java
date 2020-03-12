@@ -46,6 +46,9 @@ public class JWTTokenAutenticacaoService {
         /*Adiciona no cabeçalho http*/
         response.addHeader(HEADER_STRING, token); /*Authorization: Bearer 87878we8we787w8e78w78e78w7e87w*/
 
+//        Liberando resposta para porta diferente do projeto ANGULAR
+         response.addHeader("Access-Control-Allow-Origin", "*");
+
         /*Escreve token como responsta no corpo http*/
         response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
 
@@ -53,7 +56,7 @@ public class JWTTokenAutenticacaoService {
 
 
     /*Retorna o usuário validado com token ou caso não sejá valido retorna null*/
-    public Authentication getAuhentication(HttpServletRequest request) {
+    public Authentication getAuhentication(HttpServletRequest request, HttpServletResponse response) {
 
         /*Pega o token enviado no cabeçalho http*/
 
@@ -81,7 +84,8 @@ public class JWTTokenAutenticacaoService {
             }
 
         }
-
+//        Liberando resposta para porta diferente do projeto ANGULAR
+        response.addHeader("Access-Control-Allow-Origin", "*");
         return null; /*Não autorizado*/
 
     }
