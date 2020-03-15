@@ -27,7 +27,7 @@ public class SpringRestApiApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringRestApiApplication.class, args);
-//        System.out.printf(new BCryptPasswordEncoder().encode("123"));
+        System.out.printf(new BCryptPasswordEncoder().encode("123"));
     }
 
     // Mapeamento Global que refletem em todo o sistema

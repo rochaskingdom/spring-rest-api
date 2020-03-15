@@ -3,6 +3,7 @@ package com.spring.rest.api.contoller;
 import com.spring.rest.api.model.Usuario;
 import com.spring.rest.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +66,7 @@ public class UsuarioController {
     /*Vamos supor que o carregamento de usuário seja um processo lento
      * e queremos controlar ele com cache para agilizar o processo*/
     @GetMapping(value = "/", produces = "application/json")
-    @Cacheable("cacheusuarios")
+    @CachePut("cacheusuarios")
     public ResponseEntity<List<Usuario>> usuario() throws InterruptedException {
 
         List<Usuario> list = (List<Usuario>) usuarioRepository.findAll();
