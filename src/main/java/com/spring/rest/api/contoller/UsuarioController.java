@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController /* Arquitetura REST */
 @RequestMapping(value = "/usuario")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired /* de fosse CDI seria @Inject*/
